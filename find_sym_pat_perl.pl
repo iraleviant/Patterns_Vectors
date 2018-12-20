@@ -26,16 +26,16 @@ use constant CW_SYMBOL => "CW";
 use constant MIN_PATT_LENGTH => 3;
 sub main(@) {
         my $if="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test";
-        my $n_hfws= 1000;  #100;
+        my $n_hfws= 100;  #100;
         my $n_cws=10000;
         my $of="output_perl.txt";
-        my $m_thr = 0.05;
-        my $top_m_thr =0.05;   ##0.02;    ###0.05;
+        my $m_thr = 0.01;
+        #my $top_m_thr =0.05;   ##0.02;    ###0.05;
 		my $max_pattern_length = 5;  #
-		my $min_num_of_edges_per_pattern = 5;  #######3;   #20;   #5000;
+		my $min_num_of_edges_per_pattern = 3;   #5000; #5;  #######3;   #20;   #5000;
 		my $n_pattern_candidates = 5000;
 		my $top_n_lines = 1000000;
-		my $min_edge_frequency = 3; ######1; #3;
+		my $min_edge_frequency = 1; ######1; #3;
 		my $merge_sps =1;
 		my $lc;
 
@@ -76,6 +76,7 @@ sub main(@) {
 		
 		print "Writing selected patterns to $of\n";
 		write_sps("all_selected_patts_perl.txt", $selected_patterns);
+		
 		
 		
 		# Merge SPs that contain other SPs (e.g., "between CW and CW" contains "CW and CW", so we omit it.
@@ -313,8 +314,11 @@ sub extract_patterns($$$$$$$) {
 			
 			# This pattern has 2 CWs: check if it as a candidate.
 			if (@cws == 2 and $has_hfw) {
+				
 				my $str = join(" ", @patt_words);
-	
+				if (index($str, "CW CW") != -1) {
+   					$stop = 1;
+					last;   }
 				$func->($dict, $str, \@cws);
 			}					
 		}
