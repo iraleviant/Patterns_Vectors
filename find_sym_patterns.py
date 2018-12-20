@@ -38,18 +38,18 @@ p1 = Dict(dicti, patt_edg, cws_list) #this is the object i want to pass to funct
 
 def main():
 
-    #infile ="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test"  # Input file of plain text to compute set of SPs.
-    infile="/home/ira/Google_Drive/IraTechnion/PhD/news_2012_clean"
-    n_hfws= 1000 ##100 # Number of high frequency words (HFWs) that can serve as pattern elements.
+    infile ="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test"  # Input file of plain text to compute set of SPs.
+    #infile="/home/ira/Google_Drive/IraTechnion/PhD/news_2012_clean"
+    n_hfws= 100 ##100 # Number of high frequency words (HFWs) that can serve as pattern elements.
     n_cws=10000   # Number of content words (CWs) for computing the M measure (for efficiency)
-    outfile="output_python.txt"  # Output file for selected SPs.
-    m_thr = 0.05   # Threshold of M measure for selecting SPs, The only real important parameter is m_thr
-    top_m_thr = 0.05 #0.02
+    outfile="output_test.txt"  # Output file for selected SPs.
+    m_thr = 0.01   # Threshold of M measure for selecting SPs, The only real important parameter is m_thr
+    #top_m_thr = 0.05 #0.02
     max_pattern_length = 5 ##7   # Maximum pattern length to consider.
-    min_num_of_edges_per_pattern = 5#3   # Minimum of edge types for a pattern to be considered a candidate. (5000)
+    min_num_of_edges_per_pattern = 3#3   # Minimum of edge types for a pattern to be considered a candidate. (5000)
     n_pattern_candidates = 5000   # Number of patterns to considered (the N most frequent patterns)
     top_n_lines = 1000000   # Use only the top N lines for computing vocabulary and list of pattern candidates.
-    min_edge_frequency = 3 # 3   # Minimal frequency for edge to be considered in the 
+    min_edge_frequency = 1 # 3   # Minimal frequency for edge to be considered in the 
                                     # graph construction.
     merge_sps= True  # Optional: merge patterns that are a longer version of 
                                     #             another selected SP. 
@@ -318,6 +318,10 @@ def extract_patterns(line, lc, max_pattern_length, hfw_dict, cws, func, dict):
             # This pattern has 2 CWs: check if it as a candidate.
             if len(p1.cws_list)==2 and has_hfw:
                 st= " ".join(patt_words) 
+                # no two concsecutive CWs are allowed
+                if "CW CW" in st:
+                    stop=1
+                    break
                 #func_name=add_pattern_instance_func   #### missimg
                 #add_pattern_instance_func(dict, st, cws)  ##not sure it works
                 if func==1:
