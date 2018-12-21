@@ -26,6 +26,10 @@ use constant CW_SYMBOL => "CW";
 use constant MIN_PATT_LENGTH => 3;
 sub main(@) {
         my $if="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test";
+        my $files="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test,/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test";
+        #my $if="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test";
+        #my $files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_all_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/clean_wiki_new.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_word_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2012_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_clean"
+        ;
         my $n_hfws= 100;  #100;
         my $n_cws=10000;
         my $of="output_perl.txt";
@@ -66,16 +70,19 @@ sub main(@) {
 		
 		write_vocab($pattern_candidates, "patterns_perl.txt");
 		
+		
+		
+		#################################################################
 		# Third, collect edges for all pattern candidates.
 		print "Getting pattern edges.\n";
-		my $pattern_edges = read_pattern_edges($if, $hfw_dict, $cws, $pattern_candidates, $min_num_of_edges_per_pattern, $max_pattern_length, $lc);
+		my $pattern_edges = read_pattern_edges($files, $hfw_dict, $cws, $pattern_candidates, $min_num_of_edges_per_pattern, $max_pattern_length, $lc);
 		
 		# Fourth, select symmetric patterns.
 		print "Selecting symmetric patterns.\n";
 		my $selected_patterns = select_sps($pattern_edges, $min_edge_frequency, $m_thr);
 		
-		print "Writing selected patterns to $of\n";
-		write_sps("all_selected_patts_perl.txt", $selected_patterns);
+		print "Writing selected symmetric patterns to $of\n";
+		write_sps("all_selected_symmetric_patts_perl.txt", $selected_patterns);
 		
 		
 		
@@ -87,7 +94,7 @@ sub main(@) {
 
 		
 		# Last, write selected patterns to output file.
-		print "Writing only symmetric selected patterns to $of\n";
+		print "Writing only symmetric selected merged patterns to $of\n";
 		write_sps($of, $selected_patterns);
 
         return 0;
@@ -351,7 +358,7 @@ sub add_edges_func($$$) {
 
 # Traverse input file and extract edges for each pattern candidate.
 sub read_pattern_edges($$$$$$) {
-	my $if = shift;
+	my $files = shift;
 	my $hfw_dict = shift;
 	my $cws = shift;
 	my $pattern_candidates = shift;
@@ -364,30 +371,33 @@ sub read_pattern_edges($$$$$$) {
 	my %pattern_edges = map {$_ => {}} keys %$pattern_candidates;
 	
 	# First, generate a pattern dictionary.
-	my $ifh = new IO::File($if) or die "Cannot open $if for reading";
+	my @files_l= split(/,/,$files);      #split(',', $files);
+	foreach my $file (@files_l) {	
+		my $ifh = new IO::File($file) or die "Cannot open $file for reading";
+		print "Reading pattern edges in: $file.\n";
+		
+		while (my $line = $ifh->getline()) {
+			chomp($line);
+			if (++$line_ctr % 100000 == 0) {
+				printf("%.1fM %c", $line_ctr/1000000, 13);
+			}
 	
-	while (my $line = $ifh->getline()) {
-		chomp($line);
-		if (++$line_ctr % 100000 == 0) {
-			printf("%.1fM %c", $line_ctr/1000000, 13);
+			extract_patterns($line, $lc, $max_pattern_length, $hfw_dict, $cws, \&add_edges_func, \%pattern_edges);
 		}
-
-		extract_patterns($line, $lc, $max_pattern_length, $hfw_dict, $cws, \&add_edges_func, \%pattern_edges);
-	}
-	
-	$ifh->close();
-	
-	print "\n";
-	
-	foreach my $k (keys %pattern_edges) {
-		if (compute_n_edges($pattern_edges{$k}) < $min_num_of_edges_per_pattern) {
-			delete $pattern_edges{$k};
+		
+		$ifh->close();
+		
+		print "\n";
+		
+		foreach my $k (keys %pattern_edges) {
+			if (compute_n_edges($pattern_edges{$k}) < $min_num_of_edges_per_pattern) {
+				delete $pattern_edges{$k};
+			}
 		}
-	}
-	
+		
 	return \%pattern_edges;
 } 
-
+}
 sub compute_n_edges($) {
 	my $patt = shift;
 	
