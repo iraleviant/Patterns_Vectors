@@ -25,9 +25,9 @@ use constant CW_SYMBOL => "CW";
 
 use constant MIN_PATT_LENGTH => 3;
 sub main(@) {
-        my $if="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test";
-        my $files="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test,/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test";
-        #my $if="/home/ira/Google_Drive/IraTechnion/PhD/patterns/english_test";
+        my $if="/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test";
+        my $files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test,/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test";
+        #my $if="/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test";
         #my $files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_all_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/clean_wiki_new.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_word_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2012_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_clean"
         ;
         my $n_hfws= 100;  #100;
@@ -371,10 +371,10 @@ sub read_pattern_edges($$$$$$) {
 	my %pattern_edges = map {$_ => {}} keys %$pattern_candidates;
 	
 	# First, generate a pattern dictionary.
-	my @files_l= split(/,/,$files);      #split(',', $files);
-	foreach my $file (@files_l) {	
-		my $ifh = new IO::File($file) or die "Cannot open $file for reading";
-		print "Reading pattern edges in: $file.\n";
+	my @files_l= split(",",$files);      #split(',', $files);
+	foreach my $fl (@files_l) {	
+		my $ifh = new IO::File($fl) or die "Cannot open $fl for reading";
+		print "Reading pattern edges in: $fl.\n";
 		
 		while (my $line = $ifh->getline()) {
 			chomp($line);
@@ -386,18 +386,17 @@ sub read_pattern_edges($$$$$$) {
 		}
 		
 		$ifh->close();
-		
 		print "\n";
 		
 		foreach my $k (keys %pattern_edges) {
 			if (compute_n_edges($pattern_edges{$k}) < $min_num_of_edges_per_pattern) {
 				delete $pattern_edges{$k};
 			}
-		}
+		} }
 		
 	return \%pattern_edges;
 } 
-}
+
 sub compute_n_edges($) {
 	my $patt = shift;
 	
