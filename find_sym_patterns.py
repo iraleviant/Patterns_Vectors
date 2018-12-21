@@ -366,20 +366,21 @@ def read_pattern_edges(files, hfw_dict, cws, pattern_candidates, min_num_of_edge
     
     ifs = files.split(",")
     
-    for ifh in ifs:
-        print ("Collecting pattern edges in:  ", ifh)
-        for line in ifh:
-            line=line.rstrip()
-            line_ctr+=1
-            if line_ctr % 500000 == 0: #n_sent divides in 10000 without remainder
-                print ( str(round(float(line_ctr)/500000, 0))+'K'+'\r', )
-                sys.stdout.flush()
-                    
-            extract_patterns(line, lc, max_pattern_length, hfw_dict, cws,  0 , p1.pattern_edges)  
-            #extract_patterns($line, $lc, $max_pattern_length, $hfw_dict, $cws, \&add_edges_func, \%pattern_edges);
-        for k in p1.pattern_edges.copy().keys(): #can't chnage the original while iterating that's why copy
-            if compute_n_edges(p1.pattern_edges[k])< min_num_of_edges_per_pattern: #changed the min to 3
-                del(p1.pattern_edges[k])
+    for filek in ifs:
+        print ("Collecting pattern edges in:  ", filek)
+        with open(filek, 'r') as ifh:
+            for line in ifh:
+                line=line.rstrip()
+                line_ctr+=1
+                if line_ctr % 500000 == 0: #n_sent divides in 10000 without remainder
+                    print ( str(round(float(line_ctr)/500000, 0))+'K'+'\r', )
+                    sys.stdout.flush()
+                        
+                extract_patterns(line, lc, max_pattern_length, hfw_dict, cws,  0 , p1.pattern_edges)  
+                #extract_patterns($line, $lc, $max_pattern_length, $hfw_dict, $cws, \&add_edges_func, \%pattern_edges);
+            for k in p1.pattern_edges.copy().keys(): #can't chnage the original while iterating that's why copy
+                if compute_n_edges(p1.pattern_edges[k])< min_num_of_edges_per_pattern: #changed the min to 3
+                    del(p1.pattern_edges[k])
     
     return p1.pattern_edges
 
