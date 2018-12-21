@@ -14,12 +14,21 @@ PATT_ELEMENTS_SEPERATOR="-"
 HIGH_FREQUENCY_THR = 0.002#use constant HIGH_FREQUENCY_THR => 0.002; orig, mine_test=0.8
 MIN_FREQ =200 #orig=100, mine_test=3
 
-files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_all_clean.txt" #unique word num 3166906, tokens 3332411362 ~ 3.3 G
+# link to the script that downloads and preprocesses the corpora: https://code.google.com/archive/p/word2vec/
+
+#files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_all_clean.txt" #unique word num 3166906, tokens 3332411362 ~ 3.3 G
 #files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/clean_wiki_new.txt" # 9455968  ,  4151058980~ $4G
 #files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_word_clean.txt"  # 936249  #791845574 ~791.8 M
 #files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2012_clean"  #565336 , :  354722554 ~354.7 M
 #files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_clean" #758994 ,  508011282 ~508 M
 #files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test" 
+
+#files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_phrase2.txt" #tokens  3199825084 ~3.19G
+files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/wiki_phrase2.txt" # 3911786598 ~3.9G
+#files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_phrase2.txt"  #  747554756 ~747 M
+#files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/news2012_phrase2.txt"  #  336068364 ~336M
+#files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_phrase2.txt" #478173581~ 478M
+
 
 #vocab={}
 def main():
@@ -33,7 +42,7 @@ def main():
     for corpus_file in ifs:
         print ("Reading  ", corpus_file)
     
-        with open(corpus_file, 'r') as ifh:
+        with open(corpus_file, 'r',  encoding = "ISO-8859-1") as ifh:
             for line in ifh:
                 n_sent+=1
                 if n_sent % 500000 == 0: #n_sent divides in 10000 without remainder
