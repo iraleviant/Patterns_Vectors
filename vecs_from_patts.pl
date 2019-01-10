@@ -2,8 +2,26 @@
 
 #########################################################################
 #																		#
-#	This script takes a corpus of plain text and a set of 				#
-#	patterns and generates input files to the word2vec toolkit.			#
+#	1. input files: one or more plain text files (separated by commas)
+
+#2. patterns input file: a file containing the symmetric pattern types, one pattern per line, 
+#where pattern elements are separated by hyphens, and wildcards are marked by the CW symbol. 
+#For example, the pattern "X and Y" is written "CW-and-CW". 
+#The file for generating the patterns experimented with in the paper can be found in the file "selected_patterns.dat". 
+#In order to generate your own set of symmetric patterns,
+
+#3. context pairs output file: an output file that will contain the list of (words,context) pairs 
+#to be fed as input to the word2vec toolkit.
+
+#4. word vocab output file: an output file that will contain the word vocabulary to be fed as input to the word2vec toolkit.
+
+#5. context vocab output file: an output file that will contain the context vocabulary to be fed as input to the word2vec toolkit.
+#
+#6. unigram input file: if you have a pre-computed file with unigram frequencies, This script takes a corpus of plain text and a set of 
+#this can speed up the process (otherwise the script computes it, which takes time). 
+#The input format is one line per word of the format "word count". E.g.,
+#the	438738378				#
+#				#
 #																		#
 #	Author: Roy Schwartz (roys02@cs.huji.ac.il)							#
 #																		#
@@ -22,16 +40,17 @@ use constant CW_SYMBOL => "CW";
 use constant PATT_STR => "PATT";
 
 use constant PATT_ELEMENTS_SEPERATOR => "-";
-use constant HIGH_FREQUENCY_THR => 0.8; #use constant HIGH_FREQUENCY_THR => 0.002; orig, mine_test=0.8
+use constant HIGH_FREQUENCY_THR => 0.2; #use constant HIGH_FREQUENCY_THR => 0.002; orig, mine_test=0.8
 use constant MIN_FREQ => 3; #orig=100, mine_test=3
 
 sub add_patt_instance($$$$$$$$);
 
 sub main(@) {
-	#my $hfw_thr = 0.0001;
 	
-	my $input_files = "/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test";
+	#my $input_files = "/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test";
+	my $input_files = "/home/ira/Google_Drive/IraTechnion/PhD/corpus/mini_english_test.txt";
 	my $patterns_input_file ="selected_patterns.dat"; # "output_perl.txt";#"selected_patterns.dat";
+	
 	my $context_pairs_output_file = "context_file_out_perl.txt"; #all the words(as pairs)in the found patterns:big small, small big_r
 	my $word_vocabularty_output_file = "word_vocab_file_perl.txt"; #file mapping words (strings) to their counts: girl 38, boy 19..
 	my $context_vocabularty_output_file = "context_vocab_out_perl.txt";#file mapping context strings to their counts:girl 19, boy_r 38
@@ -185,9 +204,11 @@ sub add_patt_instance($$$$$$$$) {
 	my $word_vocab = shift;
 	my $context_vocab = shift;
 
-	# Pattern found.
+	# Pattern found.Selected 6 content words.
+	
 	if (exists $patterns_trie->{PATT_STR}) {
 		my ($orig_patt_str, $cw_indices) = @{$patterns_trie->{PATT_STR}};
+		print "Found pattern:  ".$orig_patt_str." \n";
 
 		# Pattern found!
 		my @elements = @$elements[map {$_ + $start - $patt_index} @$cw_indices];
@@ -197,10 +218,14 @@ sub add_patt_instance($$$$$$$$) {
 		$context_vocab->{$elements[0]."_r"}++;
 		$ofh->print($elements[0]." ".$elements[1]."\n");
 		
-		$word_vocab->{$elements[1]}++;
+		
+		print "Pattern cws 1:  ".$elements[0]." \n";
+		print "Pattern cws 2:  ".$elements[1]." \n";
+		
+		$word_vocab->{$elements[1]}++; ## why increase by one the same right word as before in word_vocab?
 		$elements[0] .= "_r";
 		
-		$context_vocab->{$elements[0]}++;
+		$context_vocab->{$elements[0]}++; ## why increase by one the same left word as before in word_vocab?
 
 		$ofh->print($elements[1]." ".$elements[0]."\n");
 	} 
@@ -282,6 +307,8 @@ sub get_cws($$$) {
 			$ifh->close();
 		}
 	}	
+	
+	print "Selected ".scalar(keys %stats)." dictionary words.\n";
 	
 	my @sorted_words = sort {$stats{$b} <=> $stats{$a}} keys %stats;
 	
