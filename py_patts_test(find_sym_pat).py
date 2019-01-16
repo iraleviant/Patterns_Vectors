@@ -68,7 +68,7 @@ def main():
 
     all_patts_candidates_file="all_patterns__candidates_python.txt"
     sym_patts_file="selected_symmetric_patts_python.txt"
-
+    #vocab_file="vocab.txt"
     # First, generate a HFW/CW dictionary.  high frequency words (HFWs)/content words (CWs)
     print ("Generating HFW/CW dictionary from ", infile) 
     #hfw_dict={}
@@ -189,7 +189,7 @@ def  gen_HFW_dict(infile, n_hfws, n_cws, lc, top_n_lines):
                         vocab[w]+=1
                         
                  
-    write_vocab(vocab, "vocab.txt")
+    #write_vocab(vocab,  vocab_file)
     
     #compare_dictionaries("vocab.txt", "/home/ira/Google_Drive/IraTechnion/PhD/perl/perl_patts/vocab_perl.txt")
     
