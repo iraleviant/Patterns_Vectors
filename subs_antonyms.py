@@ -14,7 +14,9 @@ def main():
     
     dic_file_order='/home/ira/Google_Drive/IraTechnion/PhD/python/py_patts/cws_dictionary_allpats_python_order.dat'
     word_pairs_file='english_simlex_word_pairs_human_scores.dat'
-    
+    #word_pairs_file='SL_pairs_adj.dat' #0.63 (111 pairs), 0.632
+    #word_pairs_file='SL_pairs_nouns.dat'  #0.373 (666 pairs), 0.358
+    word_pairs_file='SL_pairs_verbs.dat' #0.402 (222  pairs),  0.526
     
     fread=codecs.open(dic_file_order)
     cws_clean={}
@@ -53,9 +55,9 @@ def main():
    
     print (" Start to loop over beta values" )
     
-    for a in range (100,104): #a=103, b=202 corr=0.421, a=103; b=210  corr=0.427 (not with pos mat)
+    for a in range (103,104): #a=103, b=202 corr=0.421; a=103 b=210  corr=0.427 (not with pos mat)
         print ("The value of a is:", a)
-        for b in range(200,230):
+        for b in range(210,211):
         #beta=10 #Typical values are 7 and 10
             mat_f=a*mat_sym-b*mat_ant
             #mat_f=a*mat_ant-b*mat_sym
