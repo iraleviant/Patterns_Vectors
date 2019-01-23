@@ -9,7 +9,7 @@ import time
 
 PATT_STR="PATT"
 CW_SYMBOL="CW"
-PATT_ELEMENTS_SEPERATOR="-"
+PATT_ELEMENTS_SEPERATOR=" "
 HIGH_FREQUENCY_THR =0.002  #0.002 #0.2#0.002#use constant HIGH_FREQUENCY_THR => 0.002; orig, mine_test=0.8
 MIN_FREQ = 100#3  #100 #3#200 #orig=100, mine_test=3
 
@@ -223,17 +223,23 @@ def main():
     #input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test"
     #input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/mini_english_test.txt"
     #input_files="/home/ira.leviant@st.technion.ac.il/clean_corpus/webbase_all_clean.txt,/home/ira.leviant@st.technion.ac.il/clean_corpus/clean_wiki_new.txt,/home/ira.leviant@st.technion.ac.il/clean_corpus/billion_word_clean.txt,/home/ira.leviant@st.technion.ac.il/clean_corpus/news_2012_clean,/home/ira.leviant@st.technion.ac.il/clean_corpus/news_2013_clean"
-    input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_all_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/clean_wiki_new.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_word_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2012_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_clean"
+    input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_word_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2012_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_all_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/clean_wiki_new.txt"
 
     
-    patterns_input_file='selected_patterns.dat'#"selected_patterns_py.txt"
+    #patterns_input_file='selected_patterns.dat'#"selected_patterns_py.txt"
+    #patterns_input_file='selected_patterns_py.txt'#"selected_patterns_py.txt"
+    #patterns_input_file='selected_patterns_py_pos.txt'#"selected_patterns_py.txt"
+    patterns_input_file='selected_patterns_py_ant.txt'#"selected_patterns_py.txt"
+
     
-    context_vocab_file="context_vocab_out_python_roypatts.txt"#file mapping context strings to 
-    context_pairs_output_file ="context_file_out_python_roypatts.txt"
+    
+    
+    context_vocab_file="context_vocab_out_python_ant.txt"#file mapping context strings to 
+    context_pairs_output_file ="context_file_out_python_ant.txt"
     #dic_file='cws_dictionary_all_pats_python.dat' #already ready
     dic_file_order='cws_dictionary_allpats_python_order.dat'#already ready
-    word_vocabulary_output_file='word_vocab_python_allpats_python_roypatts.dat'
-    mat_file='all_pats_python_mat_roypatts.npz'
+    word_vocabulary_output_file='word_vocab_python_allpats_python_ant.dat'
+    mat_file='all_pats_python_mat_ant.npz'
     # Read patterns into a Trie data structure.
     patterns_trie = read_patterns_trie(patterns_input_file)
     
