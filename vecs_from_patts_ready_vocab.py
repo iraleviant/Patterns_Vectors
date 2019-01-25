@@ -63,7 +63,7 @@ def read_patterns_trie(patterns_input_file):
     
     tr=Trie()
     n_patts=0
-    with open(patterns_input_file, 'r') as ifh:
+    with open(patterns_input_file, 'r', encoding="Latin-1") as ifh:
         for patt_line in ifh:
             n_patts+=1
             patt_line=patt_line.rstrip()
@@ -153,7 +153,7 @@ def write_vocab(dic, output_file):
     sorted_vocab=sorted(dic.items(), key=lambda x:-x[1]) #sorted_vocab is a tuple ('cute', 4)
     
     # Add dummy </s> node.
-    with open(output_file, 'w') as ofh:
+    with open(output_file, 'w', encoding="Latin-1") as ofh:
         ofh.write('</s> 0\n')
         for k in sorted_vocab:
             ofh.write(k[0])
@@ -171,7 +171,7 @@ def get_cws(files):
     for corpus_file in files:
         print ("Reading  ", corpus_file)        
         #lines = ifh.readlines()
-        with open(corpus_file, 'r') as ifh:
+        with open(corpus_file, 'r', encoding="Latin-1") as ifh:
             for line in ifh:
                 n_sent+=1
                 if n_sent % 1 == 0: #n_sent divides in 10000 without remainder
@@ -223,23 +223,25 @@ def main():
     #input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/english_test"
     #input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/mini_english_test.txt"
     #input_files="/home/ira.leviant@st.technion.ac.il/clean_corpus/webbase_all_clean.txt,/home/ira.leviant@st.technion.ac.il/clean_corpus/clean_wiki_new.txt,/home/ira.leviant@st.technion.ac.il/clean_corpus/billion_word_clean.txt,/home/ira.leviant@st.technion.ac.il/clean_corpus/news_2012_clean,/home/ira.leviant@st.technion.ac.il/clean_corpus/news_2013_clean"
-    input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_word_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2012_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_all_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/clean_wiki_new.txt"
+    #input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_word_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2012_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_clean,/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_all_clean.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/clean_wiki_new.txt"
+    input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus_2/webbase_phrase2.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus_2/billion_phrase2.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus_2/wiki_phrase2.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus_2/news2012_phrase2.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus_2/news_2013_phrase2.txt"
 
     
     #patterns_input_file='selected_patterns.dat'#"selected_patterns_py.txt"
     #patterns_input_file='selected_patterns_py.txt'#"selected_patterns_py.txt"
     #patterns_input_file='selected_patterns_py_pos.txt'#"selected_patterns_py.txt"
-    patterns_input_file='selected_patterns_py_ant.txt'#"selected_patterns_py.txt"
+    patterns_input_file='selected_patterns_py_pos_2.txt'#"selected_patterns_py.txt"
 
     
     
     
-    context_vocab_file="context_vocab_out_python_ant.txt"#file mapping context strings to 
-    context_pairs_output_file ="context_file_out_python_ant.txt"
+    context_vocab_file="context_vocab_out_python_pos_2phrase.txt"#file mapping context strings to 
+    context_pairs_output_file ="context_file_out_python_pos_2phrase.txt"
     #dic_file='cws_dictionary_all_pats_python.dat' #already ready
-    dic_file_order='cws_dictionary_allpats_python_order.dat'#already ready
-    word_vocabulary_output_file='word_vocab_python_allpats_python_ant.dat'
-    mat_file='all_pats_python_mat_ant.npz'
+    #dic_file_order='cws_dictionary_allpats_python_order.dat'#already ready
+    dic_file_order='cws_dictionary_allpats_python_order_2phrase.dat'
+    word_vocabulary_output_file='word_vocab_python_allpats_python_pos_2phrase.dat'
+    mat_file='all_pats_python_mat_pos_2phrase.npz'
     # Read patterns into a Trie data structure.
     patterns_trie = read_patterns_trie(patterns_input_file)
     
@@ -247,7 +249,7 @@ def main():
         
     #cws_clean={} # dictionary of content words with their counts
    
-    fread=codecs.open(dic_file_order)
+    fread=codecs.open(dic_file_order, encoding="Latin-1")
     cws_clean_order={}
     
     lines_f = fread.readlines()[1:]
@@ -265,13 +267,13 @@ def main():
     #pat_words={}
     word_vocab={}
     context_vocab={}
-    ofh = open(context_pairs_output_file ,'w')
+    ofh = open(context_pairs_output_file ,'w', encoding="Latin-1")
 
     for corpus_file in ifs:
         n_lines = 0
         print ("Reading ", corpus_file)
        
-        with open(corpus_file, 'r') as ifh:
+        with open(corpus_file, 'r', encoding="Latin-1") as ifh:
           
             for line in ifh:
                 n_lines=n_lines+1
