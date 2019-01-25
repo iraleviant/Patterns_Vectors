@@ -11,8 +11,8 @@ import time
 PATT_STR="PATT"
 CW_SYMBOL="CW"
 PATT_ELEMENTS_SEPERATOR=" "
-HIGH_FREQUENCY_THR =0.002  #0.002 #0.2#0.002#use constant HIGH_FREQUENCY_THR => 0.002; orig, mine_test=0.8
-MIN_FREQ =100 #100 #3#200 #orig=100, mine_test=3
+HIGH_FREQUENCY_THR =0.2  #0.002 #0.2#0.002#use constant HIGH_FREQUENCY_THR => 0.002; orig, mine_test=0.8
+MIN_FREQ =3 #100 #3#200 #orig=100, mine_test=3
 
 ### code assumes lower case corpus 
 
@@ -64,7 +64,7 @@ def read_patterns_trie(patterns_input_file):
     
     tr=Trie()
     n_patts=0
-    with open(patterns_input_file, 'r') as ifh:
+    with open(patterns_input_file, 'r',encoding="Latin-1") as ifh:
         for patt_line in ifh:
             n_patts+=1
             patt_line=patt_line.rstrip()
@@ -154,7 +154,7 @@ def write_vocab(dic, output_file):
     sorted_vocab=sorted(dic.items(), key=lambda x:-x[1]) #sorted_vocab is a tuple ('cute', 4)
     
     # Add dummy </s> node.
-    with open(output_file, 'w') as ofh:
+    with open(output_file, 'w',encoding="Latin-1") as ofh:
         ofh.write('</s> 0\n')
         for k in sorted_vocab:
             ofh.write(k[0])
@@ -172,7 +172,7 @@ def get_cws(files):
     for corpus_file in files:
         print ("Reading  ", corpus_file)        
         #lines = ifh.readlines()
-        with open(corpus_file, 'r') as ifh:
+        with open(corpus_file, 'r', encoding="Latin-1") as ifh:
             for line in ifh:
                 n_sent+=1
                 if n_sent % 1000 == 0: #n_sent divides in 10000 without remainder
@@ -228,7 +228,7 @@ def main():
     
     
     input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/webbase_phrase2.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/billion_phrase2.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/wiki_phrase2.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news2012_phrase2.txt,/home/ira/Google_Drive/IraTechnion/PhD/corpus/news_2013_phrase2.txt"
-    #input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/example_after_2phrase.txt"
+    input_files="/home/ira/Google_Drive/IraTechnion/PhD/corpus/example_after_2phrase.txt"
     
     patterns_input_file='selected_patterns_py_2.txt'#"selected_patterns_py.txt"
 
@@ -264,13 +264,13 @@ def main():
     #pat_words={}
     word_vocab={}
     context_vocab={}
-    ofh = open(context_pairs_output_file ,'w')
+    ofh = open(context_pairs_output_file ,'w', encoding="Latin-1")
 
     for corpus_file in ifs:
         n_lines = 0
         print ("Reading ", corpus_file)
        
-        with open(corpus_file, 'r') as ifh:
+        with open(corpus_file, 'r', encoding="Latin-1") as ifh:
           
             for line in ifh:
                 n_lines=n_lines+1
