@@ -3,6 +3,10 @@ import sys
 import codecs
 
 
+#How to train word2vec with symmetric patterns: --download this repository https://bitbucket.org/yoavgo/word2vecf/src/default/ 
+#word2vecf and then in terminal: run make and after it: ./word2vecf -train context_file_out_python.txt  -wvocab word_vocab_python_allpats_python.dat -cvocab context_vocab_out_python.txt -output dim200vecs_reg -size 200
+
+
 filne="dim200vecs"    #file(sys.argv[1])
 #fh= open(filne, 'r+')
 
