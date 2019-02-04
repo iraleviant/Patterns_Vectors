@@ -2,6 +2,7 @@
 import re
 import codecs
 import sys
+import time
 #from blaze.expr.strings import lower
 ##########################################################
 ######################### constants  #####################
@@ -150,10 +151,9 @@ def  gen_HFW_dict(infile, n_hfws, n_cws, lc, top_n_lines):
             break   
         if top_n_lines!=True or line_ctr < top_n_lines:
             line_ctr+=1
-            if line_ctr % 100000 == 0: #n_sent divides in 10000 without remainder
-                print ( str(round(float(line_ctr)/100000, 0))+'K'+'\r', )
-                #print(line_ctr)
-                sys.stdout.flush()
+            if line_ctr % 10000 == 0: #n_sent divides in 10000 without remainder
+                print  (str(round(float(line_ctr)/10000, 0))+'K', end="\r")
+                time.sleep(0.1)
             line=line.rstrip()
             if lc:
                 line=line.lower() #lower case line
@@ -219,9 +219,10 @@ def get_pattern_candidates(infile, hfw_dict, cws, max_pattern_length, n_pattern_
             break   
         if top_n_lines!=True or line_ctr < top_n_lines:
             line_ctr+=1
-            if line_ctr % 100000 == 0: #n_sent divides in 10000 without remainder
-                print ( str(round(float(line_ctr)/10000, 0))+'K'+'\r', )
-                sys.stdout.flush()
+            if line_ctr % 10000 == 0: #n_sent divides in 10000 without remainder
+                print  (str(round(float(line_ctr)/10000, 0))+'K', end="\r")
+                time.sleep(0.1)
+
             #add_pattern_instance_func(dic, st, extra_param)  add_pattern_instance_func(dict, st, cws)
             
             
@@ -374,9 +375,10 @@ def read_pattern_edges(files, hfw_dict, cws, pattern_candidates, min_num_of_edge
             for line in ifh:
                 line=line.rstrip()
                 line_ctr+=1
-                if line_ctr % 500000 == 0: #n_sent divides in 10000 without remainder
-                    print ( str(round(float(line_ctr)/500000, 0))+'K'+'\r', )
-                    sys.stdout.flush()
+                if line_ctr % 10000 == 0: #n_sent divides in 10000 without remainder
+                    print  (str(round(float(line_ctr)/10000, 0))+'K', end="\r")
+                    time.sleep(0.1)
+
                         
                 extract_patterns(line, lc, max_pattern_length, hfw_dict, cws,  0 , p1.pattern_edges)  
                 #extract_patterns($line, $lc, $max_pattern_length, $hfw_dict, $cws, \&add_edges_func, \%pattern_edges);
