@@ -6,6 +6,7 @@ import operator
 #from nltk.metrics import BigramAssocMeasures
 import codecs
 import sys
+import time
 ##########################################################
 ######################### constants  #####################
 ##########################################################
